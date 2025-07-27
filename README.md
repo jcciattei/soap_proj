@@ -14,9 +14,9 @@ System for Occupancy Agreement (SOAP).
 
 ## Initial Setup
 
-1. Clone the git repository and navigate to the root directory.
+1. Clone the git repository with SSH and navigate to the root directory.
 ```bash
-git clone https://github.com/ddddddd
+git clone git@github.com:jcciattei/soap_proj.git
 
 ```
 
