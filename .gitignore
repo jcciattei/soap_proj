@@ -1,0 +1,25 @@
+# logs
+*.log
+
+# Python
+backend/planner-env/
+*.pyc
+__pycache__/
+*.sqlite3
+venv/
+.env/
+
+# Database
+data/*.db
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/*
+.idea
+*.suo
+*.ntvs*
+*.sln
+*.sw?
