@@ -1,6 +1,6 @@
 """
 File name: database.py
-Description: Functions for connecting to database, insertion, selection, and deletion.
+Description: Functions for connecting to database, and executing SQL statements.
 """
 import logging
 import sqlite3
@@ -19,25 +19,22 @@ def get_connection():
         raise
 
 
-def _run_db_operation(sql, params=(), commit=False, result_fn=None):
+def run_db_operation(statement):
     """
     Connects to database, executes SQL, logs / re-raises errors, closes connection.
-    - sql: SQL statement with "?" placeholders
-    - params: tuple of bind-params
-    - commit: bool of whether to commit
-    - result_fn: optional fn(cursor) as return value
+    - statement is a possibly invalid SQL statement string
     """
     conn = None
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute(sql,params)
-
-        if commit:
-            conn.commit()
-
-        if result_fn:
-            return result_fn(cur)
+        cur.execute(statement)
+        rows = cur.fetchall()
+        for row in rows:
+            print(row)
+        rows = "go"
+        input("Press enter to continue.\n>> ")
+        conn.commit()
     
     except sqlite3.Error as e:
         logging.error(f"Database error: {e}")
@@ -47,19 +44,5 @@ def _run_db_operation(sql, params=(), commit=False, result_fn=None):
         if conn:
             conn.close()
 
-
-def insert_customer_agency(agency_id, name, address, city, phone_number):
-    """
-    Attempts to insert an agency record with attributes from user input.
-    """
-    return _run_db_operation(
-        """
-        INSERT INTO customer_agency(agency_id, name, address, city, phone_number)
-        VALUES (?, ?, ?, ?, ?)
-        """,
-        (agency_id, name, address, city, phone_number),
-        commit=True,
-        result_fn=lambda cur: cur.lastrowid
-    )
 
 
